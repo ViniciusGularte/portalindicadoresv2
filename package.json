@@ -1,0 +1,64 @@
+{
+  "name": "PortalIndicadores",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "@capacitor/core": "2.1.0",
+    "@ionic-native/file": "^5.24.0",
+    "@ionic-native/file-opener": "^5.24.0",
+    "@ionic-native/printer": "^5.25.0",
+    "@ionic/react": "^5.1.0",
+    "@ionic/react-router": "^5.1.0",
+    "@ionic/storage": "3.0.4",
+    "@types/jest": "^24.0.18",
+    "@types/node": "^12.7.12",
+    "@types/pdfmake": "^0.1.13",
+    "@types/react": "^16.9.5",
+    "@types/react-dom": "^16.9.1",
+    "@types/react-router": "^5.1.1",
+    "@types/react-router-dom": "^5.1.0",
+    "cordova-plugin-printer": "^0.8.0",
+    "eslint-plugin-import": "^2.20.1",
+    "expr-eval": "^2.0.2",
+    "i": "^0.3.6",
+    "ionicons": "^5.0.1",
+    "jspdf": "^2.1.1",
+    "jspdf-autotable": "^3.5.13",
+    "localforage-cordovasqlitedriver": "^1.8.0",
+    "pdfmake": "^0.1.65",
+    "react": "^16.10.2",
+    "react-dom": "^16.10.2",
+    "react-router": "^5.1.0",
+    "react-router-dom": "^5.1.0",
+    "react-to-print": "^2.7.0",
+    "typescript": "3.6.3"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "description": "An Ionic project",
+  "devDependencies": {
+    "@capacitor/cli": "2.1.0",
+    "@ionic/lab": "3.1.0",
+    "@ionic/v1-toolkit": "3.2.1",
+    "react-scripts": "3.2.0"
+  }
+}

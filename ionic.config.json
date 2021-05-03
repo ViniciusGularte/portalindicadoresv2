@@ -1,0 +1,7 @@
+{
+  "name": "PortalIndicadores",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
