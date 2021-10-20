@@ -11,6 +11,7 @@
     "@ionic/react": "^5.1.0",
     "@ionic/react-router": "^5.1.0",
     "@ionic/storage": "3.0.4",
+    "@react-pdf/renderer": "^1.6.17",
     "@types/jest": "^24.0.18",
     "@types/node": "^12.7.12",
     "@types/pdfmake": "^0.1.13",

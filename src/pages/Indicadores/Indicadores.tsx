@@ -1,6 +1,8 @@
 /* eslint no-use-before-define: 0 */ // --> OFF
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from "react";
+import { pdf, Document, Page, Text, View } from "@react-pdf/renderer";
+
 import {
   IonPage,
   IonHeader,
@@ -24,16 +26,109 @@ import {
   getIndicadorByGrupo,
   getIndicadorBySearch,
 } from "../../services/Helpers/filterHelper";
+import { Indicador } from "../../services/interfaces/indicador";
+
 import { star, calculator, clipboard } from "ionicons/icons";
 import { data } from "../../services/indicadores_data";
 import Footer from "../Footer";
-import { addData, createDB } from "../../services/indexDB";
+import { addFavorite, removeFavorite } from "../../services/indexDB";
 
 const Indicadores: React.FC<{ history: any; match: any }> = ({ history }) => {
   const [listaIndicadores, setIndicadores] = useState(data);
-  const [listaIndicadoresAlterados] = useState(data); //setIndicadoresAlterados
+  const [modeFavorites, setModeFavorites] = useState(false);
+  const [forceRefresh, setForceRefresh] = useState("");
+
   const [searchText, setSearchText] = useState("");
-  console.log(listaIndicadores);
+  const checkIsFavorite = (_id) => {
+    const favorites = JSON.parse(localStorage.getItem("favorites"));
+    const favorites_list = favorites && favorites.filter((id) => id === _id);
+    if (favorites_list > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+  const checkIsFavoriteColor = (_id) => {
+    const favorites = JSON.parse(localStorage.getItem("favorites"));
+    const favorites_list = favorites && favorites.filter((id) => id === _id);
+
+    if (favorites_list > 0) {
+      return "warning";
+    } else {
+      return "medium";
+    }
+  };
+  const modeFavoritesFunc = (val) => {
+    setModeFavorites(val);
+    const favorites = JSON.parse(localStorage.getItem("favorites"));
+    console.log(data);
+    console.log(
+      data.filter((indicador) => favorites.indexOf(indicador.id) === -1)
+    );
+    if (!val) {
+      setIndicadores(data);
+    } else {
+      setIndicadores(
+        data.filter((indicador) => favorites.includes(indicador.id))
+      );
+    }
+  };
+
+  const IndicadorPdf = ({ indicador }: { indicador: Indicador }) => (
+    <Document>
+      <Page>
+        <View style={{ textAlign: "center", margin: 30 }}>
+          <Text>{indicador.nome}</Text>
+        </View>
+        <View style={{ margin: 30 }}>
+          <Text>Conceito: {indicador.conceito}</Text>
+        </View>
+        <View style={{ margin: 30 }}>
+          <Text>Formula: {indicador.formula}</Text>
+        </View>
+        <View style={{ margin: 30 }}>
+          <Text>Exemplo: {indicador.exemplo}</Text>
+        </View>
+      </Page>
+    </Document>
+  );
+  const downloadFile = (blob, fileName) => {
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = fileName;
+    document.body.append(link);
+    link.click();
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(link.href), 7000);
+  };
+  const downloadPdfIndicador = async (indicador: Indicador) => {
+    const blob = await pdf(<IndicadorPdf indicador={indicador} />).toBlob();
+    downloadFile(blob, indicador.nome);
+  };
+  const gerarRelatorioCompleto = async () => {
+    let pages = [];
+    listaIndicadores.forEach((indicador, key) => {
+      pages.push(
+        <Page>
+          <View style={{ textAlign: "center", margin: 30 }}>
+            <Text>{indicador.nome}</Text>
+          </View>
+          <View style={{ margin: 30 }}>
+            <Text>Conceito: {indicador.conceito}</Text>
+          </View>
+          <View style={{ margin: 30 }}>
+            <Text>Formula: {indicador.formula}</Text>
+          </View>
+          <View style={{ margin: 30 }}>
+            <Text>Exemplo: {indicador.exemplo}</Text>
+          </View>
+        </Page>
+      );
+    });
+    const blob = await pdf(<Document>{pages}</Document>).toBlob();
+    downloadFile(blob, "Relatorio Embrapa Indicadores");
+  };
+
   return (
     <IonPage>
       <IonHeader>
@@ -42,41 +137,12 @@ const Indicadores: React.FC<{ history: any; match: any }> = ({ history }) => {
             <IonMenuButton />
           </IonButtons>
           <h4>Indicadores</h4>
-          <IonButtons slot="end">
-            <IonButton
-              color="warning"
-              onClick={() => {
-                let favoritosAtual = JSON.parse(
-                  localStorage.getItem("favoritos")
-                );
-                let favoritos = listaIndicadoresAlterados.filter(
-                  (indicador) => {
-                    return indicador.favorito === true;
-                  }
-                );
-                if (favoritosAtual === "[]") {
-                  addData(favoritos);
-                  localStorage.setItem("favoritos", JSON.stringify(favoritos));
-                  setIndicadores(favoritos);
-                  console.log(favoritos);
-                } else {
-                  setIndicadores(favoritos);
-                  let x = favoritos.filter((indicador) => {
-                    addData(indicador.id);
-                  });
 
-                  //setIndicadores(favoritosAtual);
-                }
-              }}
-            >
-              <IonIcon size={"large"} icon={star} />
-            </IonButton>
-          </IonButtons>
           <IonButtons slot="end">
             <IonButton
               color="primary"
               onClick={() => {
-                history.push(`/home/indicador/relatorio`);
+                gerarRelatorioCompleto();
               }}
             >
               <IonIcon size={"large"} icon={clipboard} />
@@ -135,7 +201,6 @@ const Indicadores: React.FC<{ history: any; match: any }> = ({ history }) => {
                   onClick={() => {
                     const globais = getIndicadorByGrupo("2");
                     setIndicadores(globais);
-                    console.log("globais");
                   }}
                 >
                   Globais
@@ -150,7 +215,6 @@ const Indicadores: React.FC<{ history: any; match: any }> = ({ history }) => {
                   onClick={() => {
                     const zootecnicos = getIndicadorByGrupo("3");
                     setIndicadores(zootecnicos);
-                    console.log("zootecnicos");
                   }}
                 >
                   Zootecnicos
@@ -159,10 +223,11 @@ const Indicadores: React.FC<{ history: any; match: any }> = ({ history }) => {
             </IonRow>
           </IonGrid>
         </IonCard>
+
         <IonCard>
           <IonList>
-            {listaIndicadores.map((indicador) => (
-              <IonItemSliding>
+            {listaIndicadores.map((indicador, key) => (
+              <IonItemSliding key={key}>
                 <IonItem>
                   <IonRouterLink href={`/home/indicador/${indicador.id}`}>
                     {indicador.nome}
@@ -182,33 +247,9 @@ const Indicadores: React.FC<{ history: any; match: any }> = ({ history }) => {
                   >
                     <IonIcon size={"large"} icon={calculator} />
                   </IonButton>
-                  <IonButton
-                    item-content
-                    fill="clear"
-                    slot="end"
-                    size="default"
-                    color="warning"
-                    data-toggle="tooltip"
-                    data-placement="top"
-                    title={"Favoritar"}
-                    onClick={() => {
-                      let favoritar = data.filter((data) => {
-                        console.log(indicador.id);
 
-                        if (data.favorito === false && indicador.id === data.id)
-                          return (data.favorito = true);
-                        else if (
-                          data.favorito === true &&
-                          indicador.id === data.id
-                        )
-                          return (data.favorito = false);
-                        else return 0;
-                      });
-                    }}
-                  >
-                    <IonIcon size={"medium"} icon={star} />
-                  </IonButton>
                   <IonButton
+                    onClick={() => downloadPdfIndicador(indicador)}
                     item-content
                     fill="clear"
                     slot="end"
@@ -216,24 +257,7 @@ const Indicadores: React.FC<{ history: any; match: any }> = ({ history }) => {
                     color="primary"
                     data-toggle="tooltip"
                     data-placement="top"
-                    title={"relatorio"}
-                    onClick={() => {
-                      let fazerrelatorio = data.filter((data) => {
-                        console.log(indicador.id);
-
-                        if (
-                          data.relatorio === false &&
-                          indicador.id === data.id
-                        )
-                          return (data.relatorio = true);
-                        else if (
-                          data.relatorio === true &&
-                          indicador.id === data.id
-                        )
-                          return (data.relatorio = false);
-                        else return 0;
-                      });
-                    }}
+                    title={"Relatorio"}
                   >
                     <IonIcon size={"medium"} icon={clipboard} />
                   </IonButton>

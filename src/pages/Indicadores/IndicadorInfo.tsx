@@ -15,7 +15,7 @@ import {
   IonRow,
   IonCol,
   IonIcon,
-  IonSkeletonText
+  IonSkeletonText,
 } from "@ionic/react";
 import { getIndicadorById } from "../../services/Helpers/filterHelper";
 import { Indicador } from "../../services/interfaces/indicador";
@@ -25,7 +25,7 @@ import Footer from "../Footer";
 
 const IndicadorInfo: React.FC<{ history: any; match: any }> = ({
   history,
-  match
+  match,
 }) => {
   const [showLoading, setShowLoading] = useState(true);
   const { id } = match.params;
