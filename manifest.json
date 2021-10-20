@@ -1,0 +1,17 @@
+{
+  "name": "Portal de Indicadores",
+  "short_name": "Portal",
+  "theme_color": "rgb(6,97,124)",
+  "background_color":"rgb(6,97,124)",
+  "display": "standalone",
+  "Scope": "/",
+  "start_url": "https://tender-elion-a8dd56.netlify.app",
+  "icons": [
+    {
+      "src": "/images/icons/logo_menu.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    }
+  ],
+  "splash_pages": true
+}
