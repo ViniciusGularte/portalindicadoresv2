@@ -67,6 +67,7 @@ const App: React.FC = () => (
       <IonSplitPane contentId="main">
         <Menu appPages={appPages} />
         <IonRouterOutlet id="main">
+          <Route exact path="/index.html" render={() => <Redirect to="/home" />} />
           <Route path="/home" component={Home} exact />
           <Route path="/home/indicadores" component={Indicadores} exact />
           <Route path="/home/indicador/relatorio" component={IndicadorRelatorio} exact />
