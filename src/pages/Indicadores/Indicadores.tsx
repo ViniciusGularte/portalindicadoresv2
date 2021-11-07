@@ -28,51 +28,15 @@ import {
 } from "../../services/Helpers/filterHelper";
 import { Indicador } from "../../services/interfaces/indicador";
 
-import { star, calculator, clipboard } from "ionicons/icons";
+import { calculator, clipboard } from "ionicons/icons";
 import { data } from "../../services/indicadores_data";
 import Footer from "../Footer";
-import { addFavorite, removeFavorite } from "../../services/indexDB";
 
 const Indicadores: React.FC<{ history: any; match: any }> = ({ history }) => {
   const [listaIndicadores, setIndicadores] = useState(data);
-  const [modeFavorites, setModeFavorites] = useState(false);
-  const [forceRefresh, setForceRefresh] = useState("");
 
   const [searchText, setSearchText] = useState("");
-  const checkIsFavorite = (_id) => {
-    const favorites = JSON.parse(localStorage.getItem("favorites"));
-    const favorites_list = favorites && favorites.filter((id) => id === _id);
-    if (favorites_list > 0) {
-      return true;
-    } else {
-      return false;
-    }
-  };
-  const checkIsFavoriteColor = (_id) => {
-    const favorites = JSON.parse(localStorage.getItem("favorites"));
-    const favorites_list = favorites && favorites.filter((id) => id === _id);
-
-    if (favorites_list > 0) {
-      return "warning";
-    } else {
-      return "medium";
-    }
-  };
-  const modeFavoritesFunc = (val) => {
-    setModeFavorites(val);
-    const favorites = JSON.parse(localStorage.getItem("favorites"));
-    console.log(data);
-    console.log(
-      data.filter((indicador) => favorites.indexOf(indicador.id) === -1)
-    );
-    if (!val) {
-      setIndicadores(data);
-    } else {
-      setIndicadores(
-        data.filter((indicador) => favorites.includes(indicador.id))
-      );
-    }
-  };
+  
 
   const IndicadorPdf = ({ indicador }: { indicador: Indicador }) => (
     <Document>
