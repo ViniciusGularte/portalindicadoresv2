@@ -18,7 +18,6 @@ import {
   IonSkeletonText,
 } from "@ionic/react";
 import { getIndicadorById } from "../../services/Helpers/filterHelper";
-import { Indicador } from "../../services/interfaces/indicador";
 import { calculator } from "ionicons/icons";
 
 import Footer from "../Footer";
@@ -30,7 +29,7 @@ const IndicadorInfo: React.FC<{ history: any; match: any }> = ({
   const [showLoading, setShowLoading] = useState(true);
   const { id } = match.params;
 
-  const [indicador, setIndicador] = useState<Indicador>(getIndicadorById(id));
+  const indicador= getIndicadorById(id)
 
   return (
     <IonPage>

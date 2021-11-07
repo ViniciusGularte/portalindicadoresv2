@@ -1,6 +1,5 @@
 import React from "react";
 
-import {Storage} from "@ionic/storage";
 
 import { Redirect, Route } from "react-router-dom";
 import { IonApp, IonRouterOutlet, IonSplitPane } from "@ionic/react";
