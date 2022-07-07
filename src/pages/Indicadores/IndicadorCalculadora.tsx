@@ -17,7 +17,6 @@ import {
   IonLabel,
   IonItem,
   IonBackButton,
-  IonAlert
 } from "@ionic/react";
 import { helpCircle } from "ionicons/icons";
 import { getIndicadorById } from "../../services/Helpers/filterHelper";
@@ -28,7 +27,7 @@ import Footer from "../Footer";
 
 const IndicadorCalculadora: React.FC<{ history: any; match: any }> = ({
   history,
-  match
+  match,
 }) => {
   const [showAlert1, setShowAlert1] = useState(false);
   const { id } = match.params;
@@ -36,18 +35,20 @@ const IndicadorCalculadora: React.FC<{ history: any; match: any }> = ({
   const [r, setR] = useState(0);
   const changeInput = (e: any) => {
     const novoIndicador = Object.assign({}, indicador);
-    novoIndicador.formula_equacao.forEach(equacao => {
+    novoIndicador.formula_equacao.forEach((equacao) => {
       if (equacao.name === e.target.name) {
         equacao.value = e.target.value;
       }
     });
-    console.log(novoIndicador);
     setIndicador(novoIndicador);
   };
   const calcular = () => {
     let formula1 = indicador.formula1;
-    indicador.formula_equacao.forEach(equacao => {
-      formula1 = formula1.replace(equacao.name, equacao.value);
+    indicador.formula_equacao.forEach((equacao) => {
+      formula1 = formula1.replace(
+        equacao.name,
+        equacao.value ? equacao.value : "0"
+      );
     });
 
     setR(Parser.evaluate(formula1)); // 42
@@ -70,10 +71,10 @@ const IndicadorCalculadora: React.FC<{ history: any; match: any }> = ({
         <IonCard>
           <IonGrid>
             <IonRow>
-                <h2>  Calculadora</h2>
+              <h2> Calculadora</h2>
             </IonRow>
             <IonRow>
-                <h4>  {indicador.formula}</h4>
+              <h4> {indicador.formula}</h4>
               <IonCol>{}</IonCol>
             </IonRow>
             {indicador.formula_equacao.map((equacao, index) => (
@@ -102,6 +103,7 @@ const IndicadorCalculadora: React.FC<{ history: any; match: any }> = ({
                       </IonRow>
                     </IonLabel>
                     <IonInput
+                      required
                       onIonInput={changeInput}
                       name={equacao.name}
                       value={equacao.value}
@@ -115,20 +117,24 @@ const IndicadorCalculadora: React.FC<{ history: any; match: any }> = ({
               <IonButton
                 onClick={() => {
                   calcular();
-                  setShowAlert1(true)
+                  setShowAlert1(true);
                 }}
                 color="primary"
               >
                 Calcular
               </IonButton>
-              <IonAlert
-                isOpen={showAlert1}
-                onDidDismiss={() => setShowAlert1(false)}
-                header={'Resultado'}
-                subHeader={''}
-                message={`O resultado é ${r}.`}
-                buttons={['OK']}
-              />
+              {showAlert1 && (
+                <IonLabel
+                  color="primary"
+                  style={{
+                    fontWeight: "bold",
+                    fontSize: "1.5rem",
+                    textAlign: "center",
+                  }}
+                >
+                  <h2>Resultado: {r}</h2>
+                </IonLabel>
+              )}
             </IonCol>
           </IonGrid>
         </IonCard>

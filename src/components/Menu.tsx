@@ -8,11 +8,11 @@ import {
   IonMenu,
   IonMenuToggle,
   IonTitle,
-  IonToolbar
-} from '@ionic/react';
-import React from 'react';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { AppPage } from '../declarations';
+  IonToolbar,
+} from "@ionic/react";
+import React from "react";
+import { RouteComponentProps, withRouter } from "react-router-dom";
+import { AppPage } from "../declarations";
 
 interface MenuProps extends RouteComponentProps {
   appPages: AppPage[];
@@ -30,11 +30,16 @@ const Menu: React.FunctionComponent<MenuProps> = ({ appPages }) => (
         {appPages.map((appPage, index) => {
           return (
             <IonMenuToggle key={index} autoHide={false}>
-              <IonItem routerLink={appPage.url} routerDirection="none">
-              <IonIcon slot="start"
-                ios={appPage.iosIcon}
-                md={appPage.mdIcon}
-              />
+              <IonItem
+                onClick={appPage.onClick}
+                routerLink={appPage.onClick ? "/home/indicadores" : appPage.url}
+                routerDirection="none"
+              >
+                <IonIcon
+                  slot="start"
+                  ios={appPage.iosIcon}
+                  md={appPage.mdIcon}
+                />
                 <IonLabel>{appPage.title}</IonLabel>
               </IonItem>
             </IonMenuToggle>

@@ -3,6 +3,7 @@ export interface AppPage {
   iosIcon: string;
   mdIcon: string;
   title: string;
+  onClick?: () => void;
 }
 export interface IndicadoresPage {
   url: string;
