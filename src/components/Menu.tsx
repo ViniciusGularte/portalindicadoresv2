@@ -1,5 +1,6 @@
 import {
   IonContent,
+  IonFooter,
   IonHeader,
   IonIcon,
   IonItem,
@@ -9,6 +10,9 @@ import {
   IonMenuToggle,
   IonTitle,
   IonToolbar,
+  IonRouterLink,
+  IonImg,
+  IonText,
 } from "@ionic/react";
 import React from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
@@ -47,6 +51,56 @@ const Menu: React.FunctionComponent<MenuProps> = ({ appPages }) => (
         })}
       </IonList>
     </IonContent>
+    <IonFooter
+      style={{
+        marginBottom: 16,
+      }}
+    >
+      <IonToolbar>
+        <IonImg
+          src="/images/embrapa.png"
+          style={{
+            width: 100,
+            height: 100,
+            marginLeft: "auto",
+            marginRight: "auto",
+          }}
+          alt="embrapa"
+        />
+        <IonRouterLink
+          style={{
+            marginBottom: 2,
+            textAlign: "center",
+          }}
+          href="https://www.embrapa.br"
+        >
+          <IonTitle
+            style={{
+              fontSize: 16,
+              textAlign: "center",
+            }}
+          >
+            {" "}
+            Empresa Brasileira de Pesquisa Agropecuária
+          </IonTitle>
+        </IonRouterLink>{" "}
+        <IonRouterLink
+          style={{
+            textAlign: "center",
+          }}
+          href="https://www.embrapa.br"
+        >
+          <IonTitle
+            style={{
+              fontSize: 12,
+              textAlign: "center",
+            }}
+          >
+            Ministério da Agricultura, Pecuária e Abastecimento
+          </IonTitle>
+        </IonRouterLink>
+      </IonToolbar>
+    </IonFooter>
   </IonMenu>
 );
 

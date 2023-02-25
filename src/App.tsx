@@ -1,7 +1,13 @@
 import React from "react";
 
 import { Redirect, Route } from "react-router-dom";
-import { IonApp, IonRouterOutlet, IonSplitPane } from "@ionic/react";
+import {
+  IonApp,
+  IonRouterOutlet,
+  IonSplitPane,
+  IonHeader,
+  IonText,
+} from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import { AppPage } from "./declarations";
 
@@ -11,7 +17,7 @@ import Indicadores from "./pages/Indicadores/Indicadores";
 import IndicadorInfo from "./pages/Indicadores/IndicadorInfo";
 import IndicadorCalculadora from "./pages/Indicadores/IndicadorCalculadora";
 import IndicadorRelatorio from "./pages/Indicadores/IndicadorRelatorio";
-import { pdf, Document, Page, Text, View } from "@react-pdf/renderer";
+import { pdf, Document, Page, Text, View, Image } from "@react-pdf/renderer";
 import { data } from "./services/indicadores_data";
 
 import {
@@ -113,6 +119,48 @@ const App: React.FC = () => {
                 <View style={{ margin: 30 }}>
                   <Text>Exemplo: {indicador.exemplo}</Text>
                 </View>
+
+                <Image
+                  src={"/images/embrapa.png"}
+                  style={{
+                    width: 100,
+                    height: 100,
+                    bottom: 60,
+                    position: "absolute",
+                    left: "40%",
+                    textAlign: "center",
+                  }}
+                  fixed
+                />
+                <Text
+                  style={{
+                    position: "absolute",
+                    fontSize: 12,
+                    bottom: 10,
+                    left: 0,
+                    right: 0,
+                    textAlign: "center",
+                    color: "grey",
+                  }}
+                  fixed
+                >
+                  Embrapa pecuária sul - 2023
+                </Text>
+                <Text
+                  style={{
+                    position: "absolute",
+                    fontSize: 12,
+                    bottom: 30,
+                    left: 0,
+                    right: 0,
+                    textAlign: "center",
+                    color: "grey",
+                  }}
+                  render={({ pageNumber, totalPages }) =>
+                    `${pageNumber} / ${totalPages}`
+                  }
+                  fixed
+                />
               </Page>
             );
           });
@@ -127,6 +175,11 @@ const App: React.FC = () => {
   return (
     <IonApp>
       <IonReactRouter>
+        <IonSplitPane contentId="main">
+          <IonHeader>
+            <h1>Embrapa Indicadores</h1>
+          </IonHeader>
+        </IonSplitPane>
         <IonSplitPane contentId="main">
           <Menu appPages={appPages} />
           <IonRouterOutlet id="main">
