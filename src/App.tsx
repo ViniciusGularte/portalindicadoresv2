@@ -1,13 +1,7 @@
 import React from "react";
 
 import { Redirect, Route } from "react-router-dom";
-import {
-  IonApp,
-  IonRouterOutlet,
-  IonSplitPane,
-  IonHeader,
-  IonText,
-} from "@ionic/react";
+import { IonApp, IonRouterOutlet, IonSplitPane, IonHeader } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import { AppPage } from "./declarations";
 

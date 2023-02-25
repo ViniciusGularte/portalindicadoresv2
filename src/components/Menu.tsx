@@ -12,7 +12,6 @@ import {
   IonToolbar,
   IonRouterLink,
   IonImg,
-  IonText,
 } from "@ionic/react";
 import React from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
